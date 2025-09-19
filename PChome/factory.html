@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合光同程 · 工厂端供应商门户</title>
+    <meta name="description" content="工厂端供应商门户：数据看板、报价管理、订单管理、结算管理">
+    <link rel="stylesheet" href="./factory.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='0' y='0' width='100' height='100' rx='14' fill='%230052D9'/><text x='50' y='60' font-size='44' text-anchor='middle' fill='white'>FP</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="left">
+                <span class="logo">合光同程</span>
+                <span class="factory-name" id="factory-name">深圳市绒创工厂</span>
+            </div>
+            <div class="right">
+                <div class="bell" id="bell"><span>🔔</span><i id="bell-badge">5</i></div>
+                <select class="lang" id="lang"><option>中文</option><option>English</option></select>
+                <button class="btn ghost" id="logout">退出</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sider">
+            <nav class="menu">
+                <button class="item is-active" data-route="home">1 数据看板</button>
+                <button class="item" data-route="quotes">2 报价管理</button>
+                <button class="item" data-route="orders">3 订单管理</button>
+                <button class="item" data-route="settle">4 结算管理</button>
+            </nav>
+        </aside>
+
+        <main class="workspace">
+            <!-- 数据看板（首页） -->
+            <section id="view-home" class="view is-active">
+                <div class="grid">
+                    <aside class="todo-panel">
+                        <h2 class="panel-title">待办任务</h2>
+                        <div class="todo-cards">
+                            <button class="todo-card" data-jump="quotes" data-key="status" data-value="待报价"><span class="label">待报价</span><span class="num">12</span></button>
+                            <button class="todo-card" data-jump="orders" data-key="status" data-value="待确认"><span class="label">待确认</span><span class="num">5</span></button>
+                            <button class="todo-card" data-jump="orders" data-key="status" data-value="待上传"><span class="label">待上传</span><span class="num">8</span></button>
+                            <button class="todo-card" data-jump="orders" data-key="status" data-value="待交付"><span class="label">待交付</span><span class="num">3</span></button>
+                        </div>
+                        <div class="hint">点击卡片跳转并自动带筛选</div>
+                    </aside>
+                    <section class="analytics-panel">
+                        <h2 class="panel-title">数据概要（24h）</h2>
+                        <div class="kpi-strip">
+                            <div class="kpi"><span>总报价数</span><b id="k-quote">45</b></div>
+                            <div class="kpi"><span>总订单数</span><b id="k-order">32</b></div>
+                            <div class="kpi"><span>生产中</span><b id="k-in">18</b></div>
+                            <div class="kpi"><span>完成订单</span><b id="k-done">14</b></div>
+                            <div class="kpi"><span>次品率</span><b id="k-defect">0.8%</b></div>
+                        </div>
+                        <div class="charts">
+                            <div class="chart-card">
+                                <div class="chart-header"><span>近30天订单金额</span><label class="toggle"><input type="checkbox" id="toggle-amount"><span>切换为件数</span></label></div>
+                                <div id="c-30" class="chart"></div>
+                            </div>
+                            <div class="chart-card"><div class="chart-header"><span>订单状态分布</span></div><div id="c-status" class="chart"></div></div>
+                            <div class="chart-card"><div class="chart-header"><span>月度账款（已结算/未结算）</span></div><div id="c-bill" class="chart"></div></div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- 报价管理 -->
+            <section id="view-quotes" class="view">
+                <div class="toolbar">
+                    <div class="tabs">
+                        <button class="tab is-active" data-tab="todo">报价任务</button>
+                        <button class="tab" data-tab="done">已报价</button>
+                        <button class="tab" data-tab="expired">已失效</button>
+                    </div>
+                    <div class="tools">
+                        <input class="input" placeholder="搜索项目名称">
+                        <select><option>全部状态</option><option>待报价</option><option>已报价</option><option>已失效</option></select>
+                        <input class="input" type="date">
+                        <button class="btn" id="q-refresh">刷新</button>
+                    </div>
+                </div>
+                <div class="table" id="q-table"></div>
+                <div class="drawer" id="q-drawer" aria-hidden="true"></div>
+            </section>
+
+            <!-- 订单管理 -->
+            <section id="view-orders" class="view">
+                <div class="toolbar">
+                    <input class="input" placeholder="搜索订单号/项目">
+                    <select><option>全部状态</option><option>待确认</option><option>生产中</option><option>待验收</option><option>待交付</option></select>
+                    <input class="input" type="date">
+                    <div class="right-tools"><button class="btn" id="toggle-view">Kanban视图</button></div>
+                </div>
+                <div class="kanban" id="o-kanban">
+                    <div class="col"><div class="col-title">待确认</div><div class="col-body"></div></div>
+                    <div class="col"><div class="col-title">生产中</div><div class="col-body"></div></div>
+                    <div class="col"><div class="col-title">待验收</div><div class="col-body"></div></div>
+                    <div class="col"><div class="col-title">待交付</div><div class="col-body"></div></div>
+                </div>
+                <div class="table" id="o-table" hidden></div>
+                <div class="drawer" id="o-drawer" aria-hidden="true"></div>
+            </section>
+
+            <!-- 结算管理 -->
+            <section id="view-settle" class="view">
+                <div class="tabs">
+                    <button class="tab is-active" data-tab="bill">账款查看</button>
+                    <button class="tab" data-tab="invoice">发票管理</button>
+                    <button class="tab" data-tab="records">结算记录</button>
+                </div>
+                <div class="settle-panel" id="settle-bill">
+                    <div class="summary">累计应付 ¥1,280,000 ｜ 本月已收 ¥320,000</div>
+                    <div class="table" id="bill-table"></div>
+                </div>
+                <div class="settle-panel" id="settle-invoice" hidden>
+                    <div class="toolbar"><button class="btn" id="btn-upload-invoice">+ 上传发票</button><button class="btn" id="btn-export-invoice">导出Excel</button></div>
+                    <div class="table" id="inv-table"></div>
+                </div>
+                <div class="settle-panel" id="settle-records" hidden>
+                    <div class="table" id="rec-table"></div>
+                </div>
+                <div class="modal" id="inv-modal" aria-hidden="true"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    (function(){
+        // 路由
+        const routes=['home','quotes','orders','settle','profile'];
+        function go(name){
+            document.querySelectorAll('.view').forEach(v=>v.classList.remove('is-active'));
+            document.getElementById('view-'+name)?.classList.add('is-active');
+            document.querySelectorAll('.menu .item').forEach(i=>i.classList.toggle('is-active', i.getAttribute('data-route')===name));
+            history.replaceState(null,'','#'+name);
+        }
+        document.querySelectorAll('.menu .item').forEach(i=>i.addEventListener('click',()=>go(i.getAttribute('data-route'))));
+        go(routes.includes(location.hash.replace('#',''))?location.hash.replace('#',''):'home');
+
+        // 待办卡跳转
+        document.querySelectorAll('.todo-card').forEach(c=>c.addEventListener('click',()=>{
+            go(c.getAttribute('data-jump'));
+            // TODO: 在对应列表渲染筛选chip
+        }));
+
+        // 数据看板图表
+        const c30=echarts.init(document.getElementById('c-30'));
+        const cStatus=echarts.init(document.getElementById('c-status'));
+        const cBill=echarts.init(document.getElementById('c-bill'));
+        const days=Array.from({length:30},(_,i)=>{const d=new Date(); d.setDate(d.getDate()-(29-i)); return `${d.getMonth()+1}/${d.getDate()}`;});
+        const amount=days.map(()=>Math.round(20000+Math.random()*80000));
+        const count=days.map(()=>Math.round(2+Math.random()*18));
+        function render30(useCount){
+            c30.setOption({ grid:{left:40,right:12,top:18,bottom:28}, tooltip:{trigger:'axis'}, xAxis:{type:'category',data:days,boundaryGap:false}, yAxis:{type:'value', axisLabel:{ formatter: useCount? '{value} 单' : (v)=>'¥'+(v/1000)+'k' } }, series:[{ type:'line', smooth:true, symbol:'circle', symbolSize:6, areaStyle:{opacity:.15}, data: useCount? count : amount, itemStyle:{color:'#0052D9'} }] });
+        }
+        render30(false);
+        document.getElementById('toggle-amount').addEventListener('change',e=>render30(e.target.checked));
+        cStatus.setOption({ tooltip:{trigger:'item'}, series:[{ type:'pie', radius:['45%','70%'], label:{ formatter:'{b}: {c} ({d}%)' }, data:[{value:5,name:'待确认'},{value:8,name:'待上传'},{value:18,name:'生产中'},{value:3,name:'待交付'},{value:14,name:'已完成'}] }] });
+        const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+        cBill.setOption({ legend:{top:0}, grid:{left:44,right:12,top:28,bottom:32}, tooltip:{trigger:'axis'}, xAxis:{type:'category',data:months}, yAxis:{type:'value', axisLabel:{ formatter:'{value} 万' } }, series:[{ name:'已结算', type:'bar', stack:'total', data: months.map(()=>Math.round(50+Math.random()*120)), itemStyle:{color:'#2BA471'} },{ name:'未结算', type:'bar', stack:'total', data: months.map(()=>Math.round(20+Math.random()*80)), itemStyle:{color:'#ED7B2F'} }] });
+        window.addEventListener('resize',()=>{ c30.resize(); cStatus.resize(); cBill.resize(); });
+
+        // 占位：报价/订单/结算交互后续补充
+    })();
+    </script>
+</body>
+</html>
+
+
