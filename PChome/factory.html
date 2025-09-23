@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI设计大赛创意平台 - 工厂端系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="factory.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="logo">
+                <h1>AI设计大赛创意平台</h1>
+                <span>工厂系统</span>
+            </div>
+            <div class="user-info">
+                <span>工厂管理员，您好！</span>
+                <div class="avatar">工</div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧菜单 -->
+            <aside class="sidebar">
+                <nav class="main-nav">
+                    <div class="nav-group">
+                        <ul>
+                            <li><a href="#" class="nav-link active" data-page="dashboard">首页</a></li>
+                            <li><a href="#" class="nav-link" data-page="quotation">报价管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="sampling">打样管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="orders">订单管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="settlement">资金结算</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- 右侧内容区 -->
+            <div class="content-area">
+                <!-- 首页/控制台页面 -->
+                <div id="dashboard" class="page active">
+                    <h2 class="page-title">首页</h2>
+                    
+                    <!-- 筛选区域 -->
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>菜单：</label>
+                            <select>
+                                <option>全部赛事</option>
+                                <option>AI毛绒玩具设计大赛</option>
+                                <option>高校挑战赛</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>时间范围：</label>
+                            <select>
+                                <option>近30天</option>
+                                <option>近7天</option>
+                                <option>近90天</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <!-- 待处理任务卡片区域 -->
+                    <div class="task-cards">
+                        <div class="task-card">
+                            <div class="task-card-content">
+                                <div class="task-number">12</div>
+                                <div class="task-title">待处理报价</div>
+                            </div>
+                            <button class="btn btn-primary task-action">立即处理</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-card-content">
+                                <div class="task-number">5</div>
+                                <div class="task-title">待生产订单</div>
+                            </div>
+                            <button class="btn btn-primary task-action">立即处理</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-card-content">
+                                <div class="task-number">8</div>
+                                <div class="task-title">生产中订单</div>
+                        </div>
+                            <button class="btn btn-primary task-action">立即处理</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-card-content">
+                                <div class="task-number">3</div>
+                                <div class="task-title">待交付订单</div>
+                        </div>
+                            <button class="btn btn-primary task-action">立即处理</button>
+                        </div>
+                    </div>
+
+                    <!-- 数据概要卡片（对齐 factory.html：标题 + KPI 条） -->
+                    <div class="data-summary">
+                        <div class="summary-header"><h5>数据概要（24h）</h5></div>
+                        <div class="summary-content">
+                            <div class="kpi-strip">
+                                <div class="kpi"><span>总报价数</span><b id="k-quote">45</b></div>
+                                <div class="kpi"><span>总订单数</span><b id="k-order">32</b></div>
+                                <div class="kpi"><span>生产中</span><b id="k-in">18</b></div>
+                                <div class="kpi"><span>完成订单</span><b id="k-done">14</b></div>
+                                <div class="kpi"><span>次品率</span><b id="k-defect">0.8%</b></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 图表：订单数量 与 订单状态分布（来自 factory.html） -->
+                    <div class="charts-container dashboard">
+                        <div class="chart-box">
+                            <div class="chart-header"><h3>近30天订单数量</h3></div>
+                            <div class="chart" id="c-30"></div>
+                        </div>
+                        <div class="chart-box">
+                            <div class="chart-header"><h3>订单状态分布</h3></div>
+                            <div class="chart" id="c-status"></div>
+                        </div>
+                    </div>
+
+                    <!-- 代办任务（单独模块，置于首页底部） -->
+                    <div class="task-list dashboard-bottom">
+                        <div class="task-header">
+                            <h3>代办任务</h3>
+                        </div>
+                        <div class="task-content">
+                            <table class="task-table">
+                            <thead>
+                                <tr>
+                                        <th>类型</th>
+                                        <th>主题</th>
+                                        <th>截止时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                        <td>报价</td>
+                                        <td>Q-202509-001 填写分摊报价</td>
+                                        <td>2024-01-15 14:30</td>
+                                        <td><button class="btn btn-small">去报价</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>订单</td>
+                                        <td>Q-202509-021 确认交货期</td>
+                                        <td>2024-01-15 13:25</td>
+                                        <td><button class="btn btn-small">去处理</button></td>
+                                </tr>
+                                <tr>
+                                        <td>验收</td>
+                                        <td>Q-202509-008 提交验收申请</td>
+                                        <td>2024-01-15 11:20</td>
+                                        <td><button class="btn btn-small">去申请</button></td>
+                                </tr>
+                                <tr>
+                                        <td>交付</td>
+                                        <td>Q-202509-010 验收通过</td>
+                                        <td>2024-01-15 10:15</td>
+                                        <td><button class="btn btn-small">去交付</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报价管理页面 -->
+                <div id="quotation" class="page">
+                    <h2 class="page-title">报价管理</h2>
+                    
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待报价</option>
+                                <option>已报价</option>
+                                <option>已失效</option>
+                                <option>已取消</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>项目编号：</label>
+                            <input type="text" placeholder="输入项目编号">
+                        </div>
+                        <div class="filter-group">
+                            <label>日期：</label>
+                            <input type="date">
+                            <span>至</span>
+                            <input type="date">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>报价列表</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>项目编号</th>
+                                    <th>下单日期</th>
+                                    <th>客户姓名</th>
+                                    <th>产品图</th>
+                                    <th>材质</th>
+                                    <th>尺寸</th>
+                                    <th>其他说明</th>
+                                    <th>数量</th>
+                                    <th>剩余时间</th>
+                                    <th>报价结果</th>
+                                    <th>状态</th>
+                                    <th>报价操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>PJ-2024001</td>
+                                    <td>2024-01-15</td>
+                                    <td>张先生</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>ABS塑料</td>
+                                    <td>20x15x10cm</td>
+                                    <td>表面光滑</td>
+                                    <td>500</td>
+                                    <td>3天</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge status-pending">待报价</span></td>
+                                    <td>
+                                        <button class="action-btn btn-primary">报价</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>PJ-2024002</td>
+                                    <td>2024-01-16</td>
+                                    <td>李女士</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>硅胶</td>
+                                    <td>10x8x5cm</td>
+                                    <td>环保材料</td>
+                                    <td>1000</td>
+                                    <td>2天</td>
+                                    <td>¥8,900</td>
+                                    <td><span class="status-badge status-approved">已报价</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>PJ-2024003</td>
+                                    <td>2024-01-17</td>
+                                    <td>王先生</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>金属</td>
+                                    <td>15x10x6cm</td>
+                                    <td>防锈处理</td>
+                                    <td>200</td>
+                                    <td>已过期</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge status-rejected">已失效</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 打样管理页面 -->
+                <div id="sampling" class="page">
+                    <h2 class="page-title">打样管理</h2>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <div class="filter-group">
+                                <label>类型：</label>
+                                <select>
+                                    <option>全部</option>
+                                    <option>打样订单</option>
+                                    <option>大货样确认</option>
+                                </select>
+                            </div>
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待打样</option>
+                                <option>打样中</option>
+                                <option>待确认</option>
+                                <option>已完成</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>搜索：</label>
+                            <input type="text" placeholder="输入项目编号或产品名称">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>打样任务列表</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>打样编号</th>
+                                    <th>产品名称</th>
+                                    <th>客户</th>
+                                    <th>要求完成日期</th>
+                                    <th>当前状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>DY-2024001</td>
+                                    <td>智能机器人套件</td>
+                                    <td>张先生</td>
+                                    <td>2024-02-01</td>
+                                    <td><span class="status-badge status-pending">待打样</span></td>
+                                    <td>
+                                        <button class="action-btn btn-primary">开始打样</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>DY-2024002</td>
+                                    <td>儿童编程玩具</td>
+                                    <td>李女士</td>
+                                    <td>2024-02-05</td>
+                                    <td><span class="status-badge status-processing">打样中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看进度</button>
+                                        <button class="action-btn btn-edit">更新进度</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>DY-2024003</td>
+                                    <td>AIP智能兔子</td>
+                                    <td>王先生</td>
+                                    <td>2024-01-28</td>
+                                    <td><span class="status-badge status-approved">已完成</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                    
+                    <!-- （工厂逻辑）大货产前样列表 -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>产前样列表</h3>
+                            <div>
+                                <button class="btn btn-primary">批量通过</button>
+                                <button class="btn btn-success">上传样图</button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>项目/订单</th>
+                                    <th>工厂</th>
+                                    <th>样品图片</th>
+                                    <th>确认状态</th>
+                                    <th>确认人/时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PJ-2025-001 / OD-88901</td>
+                                    <td>精密电子厂</td>
+                                    <td>
+                                        <div class="product-image">样图</div>
+                                    </td>
+                                    <td><span class="status-badge status-pending">待确认</span></td>
+                                    <td>-</td>
+                                    <td>颜色需与设计稿一致</td>
+                                    <td>
+                                        <button class="action-btn btn-edit">编辑</button>
+                                        <button class="action-btn btn-delete">更多</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PJ-2025-002 / OD-88902</td>
+                                    <td>创新制造有限公司</td>
+                                    <td>
+                                        <div class="product-image">样图</div>
+                                    </td>
+                                    <td><span class="status-badge status-approved">已确认</span></td>
+                                    <td>王主管 / 2025-09-10</td>
+                                    <td>可进入大货生产</td>
+                                    <td>
+                                        <button class="action-btn btn-view">详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 订单管理页面 -->
+                <div id="orders" class="page">
+                    <h2 class="page-title">订单管理</h2>
+                    
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>生产状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待生产</option>
+                                <option>生产中</option>
+                                <option>交付中</option>
+                                <option>已完成</option>
+                                <option>已取消</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>订单编号：</label>
+                            <input type="text" placeholder="输入订单编号">
+                        </div>
+                        <div class="filter-group">
+                            <label>交付日期：</label>
+                            <input type="date">
+                            <span>至</span>
+                            <input type="date">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>生产订单列表</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>订单编号</th>
+                                    <th>下单日期</th>
+                                    <th>客户姓名</th>
+                                    <th>产品图</th>
+                                    <th>材质</th>
+                                    <th>尺寸</th>
+                                    <th>其他说明</th>
+                                    <th>生产数量</th>
+                                    <th>交付日期</th>
+                                    <th>单价</th>
+                                    <th>订单总价</th>
+                                    <th>生产状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>DD-2024001</td>
+                                    <td>2024-01-10</td>
+                                    <td>张先生</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>ABS塑料</td>
+                                    <td>20x15x10cm</td>
+                                    <td>表面光滑</td>
+                                    <td>500</td>
+                                    <td>2024-02-20</td>
+                                    <td>¥25</td>
+                                    <td>¥12,500</td>
+                                    <td><span class="status-badge status-processing">生产中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">更新进度</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>DD-2024002</td>
+                                    <td>2024-01-12</td>
+                                    <td>李女士</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>硅胶</td>
+                                    <td>10x8x5cm</td>
+                                    <td>环保材料</td>
+                                    <td>1000</td>
+                                    <td>2024-02-25</td>
+                                    <td>¥8.9</td>
+                                    <td>¥8,900</td>
+                                    <td><span class="status-badge status-pending">待生产</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-primary">确认生产</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>DD-2024003</td>
+                                    <td>2024-01-15</td>
+                                    <td>王先生</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>金属</td>
+                                    <td>15x10x6cm</td>
+                                    <td>防锈处理</td>
+                                    <td>200</td>
+                                    <td>2024-02-15</td>
+                                    <td>¥33.5</td>
+                                    <td>¥6,700</td>
+                                    <td><span class="status-badge status-approved">已完成</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-primary">申请验收</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 资金结算页面 -->
+                <div id="settlement" class="page">
+                    <h2 class="page-title">资金结算</h2>
+                    <!-- 结算统计 -->
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-card-title">待结算总额</div>
+                            <div class="summary-card-value">¥23,480</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-title">本月已结算</div>
+                            <div class="summary-card-value">¥56,720</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-title">结算中金额</div>
+                            <div class="summary-card-value">¥15,300</div>
+                        </div>
+                    </div>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>结算状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待结算</option>
+                                <option>已结算</option>
+                                <option>结算中</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>订单编号：</label>
+                            <input type="text" placeholder="输入订单编号">
+                        </div>
+                        <div class="filter-group">
+                            <label>结算日期：</label>
+                            <input type="date">
+                            <span>至</span>
+                            <input type="date">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>结算明细</h3>
+                            <button class="btn btn-primary">导出结算单</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>订单编号</th>
+                                    <th>作品名称</th>
+                                    <th>作者名称</th>
+                                    <th>完成日期</th>
+                                    <th>订单金额</th>
+                                    <th>结算状态</th>
+                                    <th>应付金额</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>DD-2024001</td>
+                                    <td>智能机器人套件</td>
+                                    <td>张先生</td>
+                                    <td>2024-02-18</td>
+                                    <td>¥12,500</td>
+                                    <td><span class="status-badge status-approved">已结算</span></td>
+                                    <td>¥10,000</td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-primary">下载发票</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>DD-2024002</td>
+                                    <td>儿童编程玩具</td>
+                                    <td>李女士</td>
+                                    <td>2024-02-22</td>
+                                    <td>¥8,900</td>
+                                    <td><span class="status-badge status-processing">结算中</span></td>
+                                    <td>¥7,120</td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-primary">上传发票</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>DD-2024003</td>
+                                    <td>AIP智能兔子</td>
+                                    <td>王先生</td>
+                                    <td>2024-02-12</td>
+                                    <td>¥6,700</td>
+                                    <td><span class="status-badge status-pending">待结算</span></td>
+                                    <td>¥5,360</td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-primary">申请结算</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                    </div>
+                </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有active类
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    // 添加active类到当前链接和页面
+                    this.classList.add('active');
+                    const pageId = this.getAttribute('data-page');
+                    document.getElementById(pageId).classList.add('active');
+                });
+            });
+            
+            // 为所有按钮添加点击效果
+            const buttons = document.querySelectorAll('.btn, .action-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // 数据看板图表（对齐 factory.html）
+            const c30 = echarts.init(document.getElementById('c-30'));
+            const cStatus = echarts.init(document.getElementById('c-status'));
+            const days = Array.from({length:30},(_,i)=>{const d=new Date(); d.setDate(d.getDate()-(29-i)); return `${d.getMonth()+1}/${d.getDate()}`;});
+            const count = days.map(()=>Math.round(2+Math.random()*18));
+            function render30(){
+                c30.setOption({
+                    grid:{left:40,right:12,top:18,bottom:28},
+                    tooltip:{trigger:'axis'},
+                    xAxis:{type:'category',data:days,boundaryGap:false},
+                    yAxis:{type:'value', axisLabel:{ formatter: '{value} 单' } },
+                    series:[{ type:'line', smooth:true, symbol:'circle', symbolSize:6, areaStyle:{opacity:.15}, data: count, itemStyle:{color:'#0052D9'} }]
+                });
+            }
+            render30();
+            cStatus.setOption({ tooltip:{trigger:'item'}, series:[{ type:'pie', radius:['45%','70%'], label:{ formatter:'{b}: {c} ({d}%)' }, data:[{value:5,name:'待确认'},{value:8,name:'待上传'},{value:18,name:'生产中'},{value:3,name:'待交付'},{value:14,name:'已完成'}] }] });
+            window.addEventListener('resize',()=>{ c30.resize(); cStatus.resize(); });
+        });
+    </script>
+</body>
+</html>
