@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI设计大赛创意平台 - 生产管理系统</title>
+    <link rel="stylesheet" href="./factory-admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="logo">
+                <h1>AI设计大赛创意平台</h1>
+                <span>生产管理系统</span>
+                <div class="event-select">
+                    <button id="event-btn">当前赛事：2025主赛事 ▾</button>
+                    <div class="event-menu" id="event-menu">
+                        <button data-event="2025主赛事">2025主赛事</button>
+                        <button data-event="城市IP">城市IP</button>
+                        <button data-event="高校挑战">高校挑战</button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-info">
+                <span>管理员，您好！</span>
+                <div class="avatar">Admin</div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧菜单 -->
+            <aside class="sidebar">
+                <nav class="main-nav">
+                    <div class="nav-group">
+                        <ul>
+                            <li><a href="#" class="nav-link active" data-page="dashboard">首页</a></li>
+                            <li><a href="#" class="nav-link" data-page="factory">工厂管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="quotation">报价管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="sampling">打样管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="orders">订单管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="delivery">发货管理</a></li>
+                            <li><a href="#" class="nav-link" data-page="settlement">结算中心</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- 右侧内容区 -->
+            <div class="content-area">
+                <!-- 控制台页面 -->
+                <div id="dashboard" class="page active">
+                    <h2 class="page-title">首页</h2>
+                    
+                    <!-- 筛选区域 -->
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>时间范围：</label>
+                            <select>
+                                <option>近30天</option>
+                                <option>近7天</option>
+                                <option>近90天</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <!-- 数据卡片区域 -->
+                    <div class="data-cards">
+                        <div class="data-card">
+                            <div class="card-title">总报价数</div>
+                            <div class="card-value">156</div>
+                            <div class="card-trend">↑ 12% 较上月</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="card-title">总订单数</div>
+                            <div class="card-value">89</div>
+                            <div class="card-trend">↑ 8% 较上月</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="card-title">生产中订单</div>
+                            <div class="card-value">24</div>
+                            <div class="card-trend">↓ 5% 较上月</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="card-title">完成订单</div>
+                            <div class="card-value">65</div>
+                            <div class="card-trend">↑ 15% 较上月</div>
+                        </div>
+                    </div>
+
+                    <!-- 图表和任务区域 -->
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <h3>任务趋势 (30天)</h3>
+                            </div>
+                            <div id="chart-trend" class="chart"></div>
+                        </div>
+                        
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <h3>任务分布</h3>
+                            </div>
+                            <div id="chart-status" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <!-- 任务列表 -->
+                    <div class="task-list">
+                        <div class="task-header">
+                            <h3>待处理任务</h3>
+                            <button class="btn btn-primary">处理全部</button>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <div class="task-name">待审核图纸</div>
+                                <div class="task-desc">需要审核的客户设计图纸</div>
+                            </div>
+                            <div class="task-count">3</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <div class="task-name">待分发报价</div>
+                                <div class="task-desc">需要分发给工厂的报价请求</div>
+                            </div>
+                            <div class="task-count">5</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <div class="task-name">待比价确认</div>
+                                <div class="task-desc">需要确认的比价结果</div>
+                            </div>
+                            <div class="task-count">2</div>
+                        </div>
+                    </div>
+
+                    <!-- 最近订单 -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>最近订单</h3>
+                            <button class="btn btn-primary">查看全部</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>订单编号</th>
+                                    <th>产品名称</th>
+                                    <th>客户</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>QR-2024001</td>
+                                    <td>智能机器人套件</td>
+                                    <td>张先生</td>
+                                    <td><span class="status-badge status-pending">待发货</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>QR-2024002</td>
+                                    <td>儿童编程玩具</td>
+                                    <td>李女士</td>
+                                    <td><span class="status-badge status-processing">已发货</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>QR-2024003</td>
+                                    <td>AIP智能兔子</td>
+                                    <td>王先生</td>
+                                    <td><span class="status-badge status-approved">已完成</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 工厂管理页面 -->
+                <div id="factory" class="page">
+                    <h2 class="page-title">工厂管理</h2>
+                    
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>搜索：</label>
+                            <input type="text" placeholder="输入工厂名称">
+                        </div>
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待审核</option>
+                                <option>已入驻</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                        <button class="btn btn-success">添加工厂</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>工厂列表</h3>
+                            <button class="btn btn-primary">导出数据</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>工厂编号</th>
+                                    <th>工厂名称</th>
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>擅长领域</th>
+                                    <th>合作订单数</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>F1001</td>
+                                    <td>创新制造有限公司</td>
+                                    <td>张经理</td>
+                                    <td>138****1234</td>
+                                    <td>智能硬件、玩具</td>
+                                    <td>56</td>
+                                    <td><span class="status-badge status-approved">已入驻</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">编辑</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>F1002</td>
+                                    <td>精密电子厂</td>
+                                    <td>李主管</td>
+                                    <td>139****5678</td>
+                                    <td>电子元件、电路板</td>
+                                    <td>34</td>
+                                    <td><span class="status-badge status-approved">已入驻</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">编辑</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>F1003</td>
+                                    <td>优质模具厂</td>
+                                    <td>王厂长</td>
+                                    <td>136****9012</td>
+                                    <td>塑料制品、模具</td>
+                                    <td>22</td>
+                                    <td><span class="status-badge status-pending">待审核</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">编辑</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报价管理页面 -->
+                <div id="quotation" class="page">
+                    <h2 class="page-title">报价管理</h2>
+                    
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>审核通过</option>
+                                <option>审核中</option>
+                                <option>审核失败</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>项目编号：</label>
+                            <input type="text" placeholder="输入项目编号">
+                        </div>
+                        <div class="filter-group">
+                            <label>日期：</label>
+                            <input type="date">
+                            <span>至</span>
+                            <input type="date">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>报价列表</h3>
+                            <button class="btn btn-primary">新建报价</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>项目编号</th>
+                                    <th>作品名称</th>
+                                    <th>作者姓名</th>
+                                    <th>作品图</th>
+                                    <th>材质</th>
+                                    <th>尺寸</th>
+                                    <th>包装</th>
+                                    <th>剩余时间</th>
+                                    <th>配件清单</th>
+                                    <th>报价结果</th>
+                                    <th>审核状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>PJ-2024002</td>
+                                    <td>玩偶2</td>
+                                    <td>sxsnj</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>硅胶</td>
+                                    <td>10x8x5cm</td>
+                                    <td>盒子</td>
+                                    <td>2天</td>
+                                    <td>吊牌×1</td>
+                                    <td>¥8,900</td>
+                                    <td><span class="status-badge status-approved">审核通过</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">分发</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>PJ-2024001</td>
+                                    <td>玩偶1</td>
+                                    <td>zxciscbu</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>ABS塑料</td>
+                                    <td>20x15x10cm</td>
+                                    <td>袋子</td>
+                                    <td>3天</td>
+                                    <td>丝带×1</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge status-pending">审核中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">审核</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>PJ-2024003</td>
+                                    <td>玩偶3</td>
+                                    <td>cdvcs</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>金属</td>
+                                    <td>15x10x6cm</td>
+                                    <td>袋子</td>
+                                    <td>1天</td>
+                                    <td>无</td>
+                                    <td>¥6,700</td>
+                                    <td><span class="status-badge status-rejected">审核失败</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他页面内容类似，限于篇幅不全部展示 -->
+                <div id="sampling" class="page">
+                    <h2 class="page-title">打样管理</h2>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>类型：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>选手下单</option>
+                                <option>官方打样</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待打样</option>
+                                <option>打样中</option>
+                                <option>待确认</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>关键词：</label>
+                            <input type="text" placeholder="作品名/参赛者/订单号">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <!-- （1）参赛者选择打样：打样订单 -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>打样订单</h3>
+                            <button class="btn btn-primary">批量导出</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>订单号</th>
+                                    <th>作品名称</th>
+                                    <th>作者名称</th>
+                                    <th>实拍图</th>
+                                    <th>工厂</th>
+                                    <th>打样费</th>
+                                    <th>打样类型</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SY-2025001</td>
+                                    <td>智能兔子</td>
+                                    <td>张三</td>
+                                    <td>
+                                        <div class="product-image">待上传</div>
+                                    </td>
+                                    <td>创新制造有限公司</td>
+                                    <td>¥299</td>
+                                    <td>选手下单</td>
+                                    <td><span class="status-badge" style="background-color: #fff8e1;color: #f39c12;">打样中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">详情</button>
+                                        <button class="action-btn btn-edit">更新进度</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SY-2025002</td>
+                                    <td>环保玩偶</td>
+                                    <td>李四</td>
+                                    <td>
+                                        <div class="product-image">实拍图</div>
+                                    </td>
+                                    <td>优质模具厂</td>
+                                    <td>¥199</td>
+                                    <td>官方打样</td>
+                                    <td><span class="status-badge status-processing">待确认</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">预览样图</button>
+                                        <button class="action-btn btn-edit">确认/驳回</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SY-2025010</td>
+                                    <td>赛博朋克</td>
+                                    <td>五五</td>
+                                    <td>
+                                        <div class="product-image">待上传</div>
+                                    </td>
+                                    <td>优质模具厂</td>
+                                    <td>¥99</td>
+                                    <td>官方打样</td>
+                                    <td><span class="status-badge status-pending">待打样</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">详情</button>
+                                        <button class="action-btn btn-edit">分配工厂</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+
+                    <!-- （2）大货样生产：产前样确认 -->
+                    <!-- <div class="table-container">
+                        <div class="table-header">
+                            <h3>大货样确认列表</h3>
+                            <div>
+                                <button class="btn btn-primary">批量通过</button>
+                                <button class="btn btn-success">上传样图</button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>项目/订单</th>
+                                    <th>工厂</th>
+                                    <th>样品图片</th>
+                                    <th>确认状态</th>
+                                    <th>确认人/时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PJ-2025-001 / OD-88901</td>
+                                    <td>精密电子厂</td>
+                                    <td>
+                                        <div class="product-image">样图</div>
+                                    </td>
+                                    <td><span class="status-badge status-pending">待确认</span></td>
+                                    <td>-</td>
+                                    <td>颜色需与设计稿一致</td>
+                                    <td>
+                                        <button class="action-btn btn-edit">通过</button>
+                                        <button class="action-btn btn-delete">驳回</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PJ-2025-002 / OD-88902</td>
+                                    <td>创新制造有限公司</td>
+                                    <td>
+                                        <div class="product-image">样图</div>
+                                    </td>
+                                    <td><span class="status-badge status-approved">已确认</span></td>
+                                    <td>王主管 / 2025-09-10</td>
+                                    <td>可进入大货生产</td>
+                                    <td>
+                                        <button class="action-btn btn-view">详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div id="orders" class="page">
+                    <h2 class="page-title">订单管理</h2>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待生产</option>
+                                <option>生产中</option>
+                                <option>交付中</option>
+                                <option>已完成</option>
+                                <option>已取消</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>订单编号：</label>
+                            <input type="text" placeholder="输入订单编号">
+                        </div>
+                        <div class="filter-group">
+                            <label>日期：</label>
+                            <input type="date">
+                            <span>至</span>
+                            <input type="date">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+                    <!-- 表格内容 -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="filter-tab active" data-filter="all">全部订单</h3>
+                            <h3 class="filter-tab" data-filter="A工厂">A工厂</h3>
+                            <h3 class="filter-tab" data-filter="B工厂">B工厂</h3>
+                            <h3 class="filter-tab" data-filter="C工厂">C工厂</h3>
+                            <button class="btn btn-primary">新建报价</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>项目编号</th>
+                                    <th>作品名称</th>
+                                    <th>作者姓名</th>
+                                    <th>工厂名</th>
+                                    <th>产品图</th>
+                                    <th>材质</th>
+                                    <th>尺寸</th>
+                                    <th>生产数量</th>
+                                    <th>交付日期</th>
+                                    <th>单价</th>
+                                    <th>订单总价</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-factory="A工厂">
+                                    <td>1</td>
+                                    <td>PJ-2024001</td>
+                                    <td>智能兔子</td>
+                                    <td>张先生</td>
+                                    <td>A工厂</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>ABS塑料</td>
+                                    <td>20x15x10cm</td>
+                                    <td>500</td>
+                                    <td>2024-01-15</td>
+                                    <td>¥38</td>
+                                    <td>¥12,500</td>
+                                    <td><span class="status-badge status-approved">已完成</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">更多</button>
+                                    </td>
+                                </tr>
+                                <tr data-factory="B工厂">
+                                    <td>2</td>
+                                    <td>PJ-2024002</td>
+                                    <td>环保玩偶</td>
+                                    <td>李女士</td>
+                                    <td>B工厂</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>硅胶</td>
+                                    <td>10x8x5cm</td>
+                                    <td>1000</td>
+                                    <td>-</td>
+                                    <td>¥38</td>
+                                    <td>¥8,900</td>
+                                    <td><span class="status-badge status-pending">生产中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">验收</button>
+                                    </td>
+                                </tr>
+                                <tr data-factory="C工厂">
+                                    <td>3</td>
+                                    <td>PJ-2024003</td>
+                                    <td>赛博朋克</td>
+                                    <td>王先生</td>
+                                    <td>C工厂</td>
+                                    <td>
+                                        <div class="product-image">产品图</div>
+                                    </td>
+                                    <td>金属</td>
+                                    <td>15x10x6cm</td>
+                                    <td>200</td>
+                                    <td>2024-01-15</td>
+                                    <td>¥38</td>
+                                    <td>¥6,700</td>
+                                    <td><span class="status-badge status-rejected">已取消</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">更多</button>
+                                    </td>
+                                </tr>
+                                <tr data-factory="C工厂">
+                                    <td>4</td>
+                                    <td>PJ-2024006</td>
+                                    <td>玩偶3</td>
+                                    <td>王先生</td>
+                                    <td>C工厂</td>
+                                    <td>
+                                        <div class="product-image">样图</div>
+                                    </td>
+                                    <td>短绒</td>
+                                    <td>15x10x6cm</td>
+                                    <td>200</td>
+                                    <td>-</td>
+                                    <td>¥38</td>
+                                    <td>¥6,700</td>
+                                    <td><span class="status-badge status-processing">打样中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看</button>
+                                        <button class="action-btn btn-edit">确认/驳回</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="delivery" class="page">
+                    <h2 class="page-title">发货管理</h2>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待发货</option>
+                                <option>已发货</option>
+                                <option>已签收</option>
+                                <option>异常</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>订单编号：</label>
+                            <input type="text" placeholder="输入订单编号">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                        <button class="btn btn-success">导入地址</button>
+                        <button class="btn btn-primary">批量打印面单</button>
+                    </div>
+
+                    <!-- 需发货作品项目列表 -->
+                    <div class="projects-section">
+                        <h2>需发货作品项目</h2>
+                        <div class="projects-list">
+                            <!-- 项目1 -->
+                            <div class="project-item" data-project-id="PJ-2024001">
+                                <div class="project-top">
+                                    <div class="project-name">智能兔子</div>
+                                </div>
+                                <div class="project-bottom">
+                                    <div class="product-image">产品图</div>
+                                    <div class="project-info">
+                                        <div class="project-id">项目编号：PJ-2024001</div>
+                                        <div class="project-author">作者：张先生</div>
+                                    </div>
+                                    <button class="btn view-details-btn">查看详情</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 项目2 -->
+                            <div class="project-item" data-project-id="PJ-2024002">
+                                <div class="project-top">
+                                    <div class="project-name">环保玩偶</div>
+                                </div>
+                                <div class="project-bottom">
+                                    <div class="product-image">产品图</div>
+                                    <div class="project-info">
+                                        <div class="project-id">项目编号：PJ-2024002</div>
+                                        <div class="project-author">作者：李女士</div>
+                                    </div>
+                                    <button class="btn view-details-btn">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal" id="projectModal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>项目详情与发货信息</h3>
+                                <button class="close-modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="project-details">
+                                    <h4>作品详情</h4>
+                                    <div class="detail-row">
+                                        <span class="detail-label">项目编号：</span>
+                                        <span class="detail-value" id="modal-project-id">PJ-2024001</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">作品名称：</span>
+                                        <span class="detail-value" id="modal-project-name">智能兔子</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">作者姓名：</span>
+                                        <span class="detail-value" id="modal-author">张先生</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">材质：</span>
+                                        <span class="detail-value" id="modal-material">ABS塑料</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">尺寸：</span>
+                                        <span class="detail-value" id="modal-size">20x15x10cm</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span class="detail-label">生产数量：</span>
+                                        <span class="detail-value" id="modal-quantity">500</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-container">
+                                    <div class="table-header">
+                                        <h3>发货列表</h3>
+                                        <button class="btn btn-primary">安排打包发货</button>
+                                    </div>
+                                    <table class="data-table" id="modal-shipping-table">
+                                        <thead>
+                                            <tr>
+                                                <th>发货单号</th>
+                                                <th>订单编号</th>
+                                                <th>收件人</th>
+                                                <th>电话</th>
+                                                <th>地址</th>
+                                                <th>快递公司</th>
+                                                <th>快递单号</th>
+                                                <th>发货时间</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- 发货数据将通过JS动态填充 -->
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination-container">
+                                        <div class="pagination">
+                                            <button class="pagination-btn active">1</button>
+                                            <button class="pagination-btn">2</button>
+                                            <button class="pagination-btn">下一页</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="table-container">
+                        <div class="table-header">
+                            <h3>发货列表</h3>
+                            <button class="btn btn-primary">安排打包发货</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>发货单号</th>
+                                    <th>订单编号</th>
+                                    <th>收件人</th>
+                                    <th>电话</th>
+                                    <th>地址</th>
+                                    <th>快递公司</th>
+                                    <th>快递单号</th>
+                                    <th>发货时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SHIP-10001</td>
+                                    <td>OD-88901</td>
+                                    <td>张先生</td>
+                                    <td>138****1234</td>
+                                    <td>北京市朝阳区···</td>
+                                    <td>顺丰</td>
+                                    <td>SF1234567890</td>
+                                    <td>2025-09-10 14:30</td>
+                                    <td><span class="status-badge status-processing">已发货</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">打印面单</button>
+                                        <button class="action-btn btn-edit">同步物流</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SHIP-10002</td>
+                                    <td>OD-88902</td>
+                                    <td>李女士</td>
+                                    <td>139****5678</td>
+                                    <td>上海市浦东新区···</td>
+                                    <td>中通</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge status-pending">待发货</span></td>
+                                    <td>
+                                        <button class="action-btn btn-edit">发货</button>
+                                        <button class="action-btn btn-view">地址详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div id="settlement" class="page">
+                    <h2 class="page-title">结算中心</h2>
+                    <!-- 结算统计 -->
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-card-title">总结算金额</div>
+                            <div class="summary-card-value">¥80,200</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-title">待结算总额</div>
+                            <div class="summary-card-value">¥23,480</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-title">已结算总额</div>
+                            <div class="summary-card-value">¥56,720</div>
+                        </div>
+                    </div>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>类型：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>对账管理</option>
+                                <option>资金拨付</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>状态：</label>
+                            <select>
+                                <option>全部</option>
+                                <option>待对账</option>
+                                <option>对账中</option>
+                                <option>已完成</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>关键词：</label>
+                            <input type="text" placeholder="工厂/项目/订单号">
+                        </div>
+                        <button class="btn btn-primary">查询</button>
+                    </div>
+
+                    <!-- 对账管理 -->
+                     <!-- 工厂项目订单区域 -->
+                    <div class="factory-group-container">
+                    <!-- 工厂A -->
+                    <div class="factory-division">
+                    <h2>创新制造有限公司</h2>
+                    <div class="order-card-group">
+                    <!-- 项目1 -->
+                    <div class="order-card" data-factory-id="factory-001" data-item-code="ITEM-001">
+                    <div class="card-img-section">
+                        <div class="prod-pic-placeholder">产品图</div>
+                    </div>
+                    <div class="card-info-section">
+                        <div class="prod-title">智能兔子</div>
+                        <div class="prod-code">项目编号：ITEM-001</div>
+                        <div class="prod-creator">作者：张先生</div>
+                        <button class="btn detail-view-btn">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 项目2 -->
+                <div class="order-card" data-factory-id="factory-001" data-item-code="ITEM-002">
+                    <div class="card-img-section">
+                        <div class="prod-pic-placeholder">产品图</div>
+                    </div>
+                    <div class="card-info-section">
+                        <div class="prod-title">电子宠物</div>
+                        <div class="prod-code">项目编号：ITEM-002</div>
+                        <div class="prod-creator">作者：王女士</div>
+                        <button class="btn detail-view-btn">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工厂B -->
+        <div class="factory-division">
+            <h2>精密电子厂</h2>
+            <div class="order-card-group">
+                <!-- 项目3 -->
+                <div class="order-card" data-factory-id="factory-002" data-item-code="ITEM-003">
+                    <div class="card-img-section">
+                        <div class="prod-pic-placeholder">产品图</div>
+                    </div>
+                    <div class="card-info-section">
+                        <div class="prod-title">环保传感器</div>
+                        <div class="prod-code">项目编号：ITEM-003</div>
+                        <div class="prod-creator">作者：李先生</div>
+                        <button class="btn detail-view-btn">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工厂C -->
+        <div class="factory-division">
+            <h2>未来科技加工厂</h2>
+            <div class="order-card-group">
+                <!-- 项目4 -->
+                <div class="order-card" data-factory-id="factory-003" data-item-code="ITEM-004">
+                    <div class="card-img-section">
+                        <div class="prod-pic-placeholder">产品图</div>
+                    </div>
+                    <div class="card-info-section">
+                        <div class="prod-title">智能控制器</div>
+                        <div class="prod-code">项目编号：ITEM-004</div>
+                        <div class="prod-creator">作者：赵先生</div>
+                        <button class="btn detail-view-btn">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 项目5 -->
+                <div class="order-card" data-factory-id="factory-003" data-item-code="ITEM-005">
+                    <div class="card-img-section">
+                        <div class="prod-pic-placeholder">产品图</div>
+                    </div>
+                    <div class="card-info-section">
+                        <div class="prod-title">自动化模块</div>
+                        <div class="prod-code">项目编号：ITEM-005</div>
+                        <div class="prod-creator">作者：陈女士</div>
+                        <button class="btn detail-view-btn">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 对账详情弹窗 -->
+    <div class="detail-popup" id="checkDetailsModal">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>对账详情 - <span id="popup-factory-title">创新制造有限公司</span></h3>
+                <button class="close-popup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="current-item-info">
+                    <h4>当前项目信息</h4>
+                    <div class="info-row">
+                        <span class="info-label">项目编号：</span>
+                        <span class="info-value" id="popup-item-code">ITEM-001</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">作品名称：</span>
+                        <span class="info-value" id="popup-item-title">智能兔子</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">作者：</span>
+                        <span class="info-value" id="popup-creator">张先生</span>
+                    </div>
+                </div>
+                
+                <div class="check-table-container">
+                    <div class="table-top-bar">
+                        <h4>对账列表</h4>
+                        <button class="btn export-check-btn">导出对账单</button>
+                    </div>
+                    <table class="check-data-table" id="reconciliationDataTable">
+                        <thead>
+                            <tr>
+                                <th>工厂</th>
+                                <th>订单数</th>
+                                <th>应付金额</th>
+                                <th>已付金额</th>
+                                <th>未付金额</th>
+                                <th>补件/扣款</th>
+                                <th>对账状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 数据将通过JS动态填充 -->
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    <!-- <div class="table-container">
+                        <div class="table-header">
+                            <h3>对账列表</h3>
+                            <button class="btn btn-primary">导出对账单</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>工厂</th>
+                                    <th>订单数</th>
+                                    <th>应付金额</th>
+                                    <th>已付金额</th>
+                                    <th>未付金额</th>
+                                    <th>补件/扣款</th>
+                                    <th>对账状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>创新制造有限公司</td>
+                                    <td>12</td>
+                                    <td>¥120,000</td>
+                                    <td>¥80,000</td>
+                                    <td>¥40,000</td>
+                                    <td>-¥2,000 (扣款)</td>
+                                    <td><span class="status-badge status-processing">对账中</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看明细</button>
+                                        <button class="action-btn btn-edit">确认对账</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>精密电子厂</td>
+                                    <td>8</td>
+                                    <td>¥86,500</td>
+                                    <td>¥86,500</td>
+                                    <td>¥0</td>
+                                    <td>+¥1,500 (补件)</td>
+                                    <td><span class="status-badge status-approved">已完成</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">下载对账单</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div> -->
+
+                    <!-- 资金拨付管理 -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>资金拨付记录</h3>
+                            <button class="btn btn-success">新增拨付</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>项目/阶段</th>
+                                    <th>拨付金额</th>
+                                    <th>用途</th>
+                                    <th>拨付时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025主赛事 / 生产尾款</td>
+                                    <td>¥300,000</td>
+                                    <td>支付工厂生产费用</td>
+                                    <td>2025-09-12</td>
+                                    <td><span class="status-badge status-approved">已拨付</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看凭证</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2025主赛事 / 打样费用</td>
+                                    <td>¥20,000</td>
+                                    <td>官方打样</td>
+                                    <td>2025-09-05</td>
+                                    <td><span class="status-badge status-approved">已拨付</span></td>
+                                    <td>
+                                        <button class="action-btn btn-view">查看凭证</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有active类
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    // 添加active类到当前链接和页面
+                    this.classList.add('active');
+                    const pageId = this.getAttribute('data-page');
+                    document.getElementById(pageId).classList.add('active');
+                });
+            });
+            // 顶部事件下拉
+            const evtBtn=document.getElementById('event-btn'); const evtMenu=document.getElementById('event-menu');
+            evtBtn.addEventListener('click',()=>evtMenu.classList.toggle('open'));
+            evtMenu.addEventListener('click',(e)=>{ const btn=e.target.closest('button'); if(!btn) return; evtBtn.textContent='当前赛事：'+btn.dataset.event+' ▾'; evtMenu.classList.remove('open'); });
+            document.addEventListener('click',(e)=>{ if(!evtMenu.contains(e.target)&&e.target!==evtBtn) evtMenu.classList.remove('open'); });
+
+            // 图表：任务趋势
+            const trend=echarts.init(document.getElementById('chart-trend'));
+            const days=Array.from({length:30},(_,i)=>{const d=new Date(); d.setDate(d.getDate()-(29-i)); return `${d.getMonth()+1}/${d.getDate()}`;});
+            trend.setOption({ grid:{left:40,right:12,top:18,bottom:24}, tooltip:{trigger:'axis'}, legend:{data:['报价','打样','订单']}, xAxis:{type:'category',data:days}, yAxis:{type:'value'}, series:[{name:'报价',type:'line',smooth:true,areaStyle:{opacity:.12},data:days.map(()=>~~(5+Math.random()*20)), itemStyle:{color:'#0052D9'}},{name:'打样',type:'line',smooth:true,areaStyle:{opacity:.12},data:days.map(()=>~~(2+Math.random()*12)), itemStyle:{color:'#2BA471'}},{name:'订单',type:'line',smooth:true,areaStyle:{opacity:.12},data:days.map(()=>~~(3+Math.random()*15)), itemStyle:{color:'#ED7B2F'}}] });
+
+            
+            const status=echarts.init(document.getElementById('chart-status'));
+            function renderDashboard(){
+                const x=Array.from({length:12},(_,i)=>`${i+1}月`);
+                status.setOption({ tooltip:{trigger:'item'}, series:[{ type:'pie', radius:['45%','70%'], label:{ formatter:'{b}: {c} ({d}%)' }, data:[{value:8,name:'待生产'},{value:18,name:'生产中'},{value:6,name:'待验收'},{value:4,name:'已发货'},{value:12,name:'已完成'}] }]});
+            }
+            renderDashboard();
+            window.addEventListener('resize',()=>{ trend.resize(); kpi.resize(); stacked.resize(); capacity.resize(); status.resize(); });
+
+            // 表格总条数渲染到分页左侧（与 admin.html 一致）
+            const tableContainers = document.querySelectorAll('.table-container');
+            tableContainers.forEach(container => {
+                const table = container.querySelector('table');
+                const pagination = container.querySelector('.pagination');
+                if (!table || !pagination) return;
+
+                const tbody = table.querySelector('tbody');
+                const total = tbody ? tbody.querySelectorAll('tr').length : 0;
+
+                const footer = document.createElement('div');
+                footer.className = 'table-footer';
+
+                const totalEl = document.createElement('div');
+                totalEl.className = 'table-total';
+                totalEl.textContent = `共 ${total} 条`;
+
+                footer.appendChild(totalEl);
+                footer.appendChild(pagination);
+                container.appendChild(footer);
+            });
+
+            // 获取筛选标签和表格行
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const tableRows = document.querySelectorAll('.data-table tbody tr');
+
+            // 为每个筛选标签添加点击事件
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有标签的active类
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    tab.classList.add('active');
+                    
+                    const filter = tab.getAttribute('data-filter');
+                    
+                    // 筛选并显示对应的行
+                    tableRows.forEach(row => {
+                        const factory = row.getAttribute('data-factory');
+                        
+                        if (filter === 'all' || factory === filter) {
+                            row.style.display = ''; // 显示行
+                        } else {
+                            row.style.display = 'none'; // 隐藏行
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        // 项目数据
+        const projectData = {
+            "PJ-2024001": {
+                id: "PJ-2024001",
+                name: "智能兔子",
+                author: "张先生",
+                material: "ABS塑料",
+                size: "20x15x10cm",
+                quantity: 500,
+                shipments: [
+                    {
+                        shipId: "SHIP-10001",
+                        orderId: "OD-88901",
+                        recipient: "张先生",
+                        phone: "138****1234",
+                        address: "北京市朝阳区···",
+                        courier: "顺丰",
+                        tracking: "SF1234567890",
+                        time: "2025-09-10 14:30",
+                        status: "已发货",
+                        actions: [
+                            {name: "打印面单", class: "btn-print-label"},
+                            {name: "同步物流", class: "action-btn btn-edit"}
+                        ]
+                    }
+                ]
+            },
+            "PJ-2024002": {
+                id: "PJ-2024002",
+                name: "环保玩偶",
+                author: "李女士",
+                material: "硅胶",
+                size: "10x8x5cm",
+                quantity: 1000,
+                shipments: [
+                    {
+                        shipId: "SHIP-10002",
+                        orderId: "OD-88902",
+                        recipient: "李女士",
+                        phone: "139****5678",
+                        address: "上海市浦东新区···",
+                        courier: "中通",
+                        tracking: "-",
+                        time: "-",
+                        status: "待发货",
+                        actions: [
+                            {name: "发货", class: "btn-ship"},
+                            {name: "地址详情", class: "btn-address"}
+                        ]
+                    }
+                ]
+            }
+        };
+        
+        // 获取DOM元素
+        const modal = document.getElementById('projectModal');
+        const closeModal = document.querySelector('.close-modal');
+        const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+        const projectItems = document.querySelectorAll('.project-item');
+        
+        // 填充弹窗数据
+        function fillModal(projectId) {
+            const project = projectData[projectId];
+            if (!project) return;
+            
+            // 填充作品详情
+            document.getElementById('modal-project-id').textContent = project.id;
+            document.getElementById('modal-project-name').textContent = project.name;
+            document.getElementById('modal-author').textContent = project.author;
+            document.getElementById('modal-material').textContent = project.material;
+            document.getElementById('modal-size').textContent = project.size;
+            document.getElementById('modal-quantity').textContent = project.quantity;
+            
+            // 填充发货列表
+            const tableBody = document.querySelector('#modal-shipping-table tbody');
+            tableBody.innerHTML = '';
+            
+            project.shipments.forEach(shipment => {
+                const row = document.createElement('tr');
+                
+                // 状态样式类
+                const statusClass = shipment.status === '已发货' ? 'status-badge status-approved' : 'status-pending';
+                
+                row.innerHTML = `
+                    <td>${shipment.shipId}</td>
+                    <td>${shipment.orderId}</td>
+                    <td>${shipment.recipient}</td>
+                    <td>${shipment.phone}</td>
+                    <td>${shipment.address}</td>
+                    <td>${shipment.courier}</td>
+                    <td>${shipment.tracking}</td>
+                    <td>${shipment.time}</td>
+                    <td><span class="status-badge ${statusClass}">${shipment.status}</span></td>
+                    <td id="actions-${shipment.shipId}"></td>
+                `;
+                
+                tableBody.appendChild(row);
+                
+                // 添加操作按钮
+                const actionsCell = document.getElementById(`actions-${shipment.shipId}`);
+                shipment.actions.forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = `action-btn ${action.class}`;
+                    btn.textContent = action.name;
+                    actionsCell.appendChild(btn);
+                });
+            });
+        }
+        
+        // 打开弹窗
+        function openModal(projectId) {
+            fillModal(projectId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+        
+        // 关闭弹窗
+        function closeModalFunc() {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+        
+        // 为查看详情按钮添加点击事件
+        viewDetailsBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const projectItem = btn.closest('.project-item');
+                const projectId = projectItem.getAttribute('data-project-id');
+                openModal(projectId);
+            });
+        });
+        
+        // 为项目项添加点击事件（除了按钮）
+        projectItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // 如果点击的不是按钮，则打开弹窗
+                if (!e.target.classList.contains('view-details-btn')) {
+                    const projectId = item.getAttribute('data-project-id');
+                    openModal(projectId);
+                }
+            });
+        });
+        
+        // 关闭弹窗事件
+        closeModal.addEventListener('click', closeModalFunc);
+        
+        // 点击弹窗外部关闭弹窗
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+        
+        </script>
+        <script>
+            // 对账数据
+            const accountCheckData = {
+                "创新制造有限公司": [
+                    {
+                        factoryName: "创新制造有限公司",
+                        orderQuantity: 12,
+                        amountPayable: "¥120,000",
+                        amountPaid: "¥80,000",
+                        amountUnpaid: "¥40,000",
+                        adjustments: "-¥2,000 (扣款)",
+                        checkStatus: "对账中",
+                        statusClass: "status-in-progress",
+                        operations: [
+                            {name: "查看明细", class: "btn-view-details"},
+                            {name: "确认对账", class: "btn-confirm-action"}
+                        ]
+                    }
+                ],
+                "精密电子厂": [
+                    {
+                        factoryName: "精密电子厂",
+                        orderQuantity: 8,
+                        amountPayable: "¥86,500",
+                        amountPaid: "¥86,500",
+                        amountUnpaid: "¥0",
+                        adjustments: "+¥1,500 (补件)",
+                        checkStatus: "已完成",
+                        statusClass: "status-completed",
+                        operations: [
+                            {name: "下载对账单", class: "btn-view-details"}
+                        ]
+                    }
+                ],
+                "未来科技加工厂": [
+                    {
+                        factoryName: "未来科技加工厂",
+                        orderQuantity: 5,
+                        amountPayable: "¥65,000",
+                        amountPaid: "¥35,000",
+                        amountUnpaid: "¥30,000",
+                        adjustments: "¥0",
+                        checkStatus: "待对账",
+                        statusClass: "status-pending",
+                        operations: [
+                            {name: "开始对账", class: "btn-confirm-action"}
+                        ]
+                    }
+                ]
+            };
+            
+            // 项目数据
+            const itemData = {
+                "ITEM-001": {
+                    code: "ITEM-001",
+                    title: "智能兔子",
+                    creator: "张先生",
+                    factory: "创新制造有限公司"
+                },
+                "ITEM-002": {
+                    code: "ITEM-002",
+                    title: "电子宠物",
+                    creator: "王女士",
+                    factory: "创新制造有限公司"
+                },
+                "ITEM-003": {
+                    code: "ITEM-003",
+                    title: "环保传感器",
+                    creator: "李先生",
+                    factory: "精密电子厂"
+                },
+                "ITEM-004": {
+                    code: "ITEM-004",
+                    title: "智能控制器",
+                    creator: "赵先生",
+                    factory: "未来科技加工厂"
+                },
+                "ITEM-005": {
+                    code: "ITEM-005",
+                    title: "自动化模块",
+                    creator: "陈女士",
+                    factory: "未来科技加工厂"
+                }
+            };
+            
+            // 获取DOM元素
+            const popupModal = document.getElementById('checkDetailsModal');
+            const closePopupBtn = document.querySelector('.close-popup');
+            const viewDetailButtons = document.querySelectorAll('.detail-view-btn');
+            const orderCardElements = document.querySelectorAll('.order-card');
+            
+            // 填充弹窗数据
+            function populatePopup(itemCode) {
+                const item = itemData[itemCode];
+                if (!item) return;
+                
+                const factoryRecords = accountCheckData[item.factory] || [];
+                
+                // 填充项目信息
+                document.getElementById('popup-factory-title').textContent = item.factory;
+                document.getElementById('popup-item-code').textContent = item.code;
+                document.getElementById('popup-item-title').textContent = item.title;
+                document.getElementById('popup-creator').textContent = item.creator;
+                
+                // 填充对账列表
+                const tableBody = document.querySelector('#reconciliationDataTable tbody');
+                tableBody.innerHTML = '';
+                
+                factoryRecords.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.factoryName}</td>
+                        <td>${record.orderQuantity}</td>
+                        <td>${record.amountPayable}</td>
+                        <td>${record.amountPaid}</td>
+                        <td>${record.amountUnpaid}</td>
+                        <td>${record.adjustments}</td>
+                        <td><span class="status-indicator ${record.statusClass}">${record.checkStatus}</span></td>
+                        <td id="operations-${record.factoryName}"></td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                    
+                    // 添加操作按钮
+                    const operationsCell = document.getElementById(`operations-${record.factoryName}`);
+                    record.operations.forEach(op => {
+                        const btn = document.createElement('button');
+                        btn.className = `action-button ${op.class}`;
+                        btn.textContent = op.name;
+                        operationsCell.appendChild(btn);
+                    });
+                });
+            }
+            
+            // 打开弹窗
+            function openDetailPopup(itemCode) {
+                populatePopup(itemCode);
+                popupModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+            }
+            
+            // 关闭弹窗
+            function closeDetailPopup() {
+                popupModal.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }
+            
+            // 为查看详情按钮添加点击事件
+            viewDetailButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const orderCard = btn.closest('.order-card');
+                    const itemCode = orderCard.getAttribute('data-item-code');
+                    openDetailPopup(itemCode);
+                });
+            });
+            
+            // 为项目卡片添加点击事件（除了按钮）
+            orderCardElements.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // 如果点击的不是按钮，则打开弹窗
+                    if (!e.target.classList.contains('detail-view-btn')) {
+                        const itemCode = card.getAttribute('data-item-code');
+                        openDetailPopup(itemCode);
+                    }
+                });
+            });
+            
+            // 关闭弹窗事件
+            closePopupBtn.addEventListener('click', closeDetailPopup);
+            
+            // 点击弹窗外部关闭弹窗
+            popupModal.addEventListener('click', (e) => {
+                if (e.target === popupModal) {
+                    closeDetailPopup();
+                }
+            });
+            </script>
+        
+</body>
+</html>
