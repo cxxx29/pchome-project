@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>工厂详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF5A5F', // 主色调：珊瑚红
+                        secondary: '#0FA3B1', // 辅助色：科技蓝
+                        neutral: '#2A2A2A', // 中性色：深灰
+                        'neutral-light': '#8A8A8A', // 中性色：浅灰
+                        'neutral-lighter': '#F5F5F5', // 更浅的灰色背景
+                        background: '#FAFAFA', // 背景色：浅灰
+                        success: '#3AA772', // 成功色：绿色
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .badge {
+                @apply text-xs px-2 py-0.5 rounded-full;
+            }
+            .section-title {
+                @apply text-base font-bold mb-3 flex items-center;
+            }
+            .section-title::after {
+                content: '';
+                @apply flex-grow h-px bg-gray-200 ml-3;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background font-sans text-neutral min-h-screen">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <button id="backBtn" class="text-neutral-light hover:text-neutral p-2">
+                <i class="fa fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="text-lg font-bold">工厂详情</h1>
+            <button class="text-neutral-light hover:text-neutral p-2">
+                <i class="fa fa-share-alt text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="max-w-md mx-auto pt-16 pb-20">
+        <!-- 工厂头部信息 -->
+        <div class="bg-white p-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="flex items-center">
+                        <h2 class="text-lg font-bold">合光同程工厂</h2>
+                        <span class="badge bg-secondary/10 text-secondary ml-2">推荐</span>
+                    </div>
+                    <p class="text-sm text-neutral-light mt-1">广东省深圳市宝安区西乡街道固戍一路170号</p>
+                    
+                    <div class="flex items-center mt-3 space-x-4">
+                        <div class="flex items-center">
+                            <i class="fa fa-star text-yellow-400 mr-1"></i>
+                            <span class="text-sm">4.8分</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check-circle text-success mr-1"></i>
+                            <span class="text-sm">认证工厂</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-clock-o text-neutral-light mr-1"></i>
+                            <span class="text-sm">10年+经验</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="bg-secondary/10 text-secondary rounded-full w-10 h-10 flex items-center justify-center">
+                    <i class="fa fa-phone"></i>
+                </button>
+            </div>
+        </div>
+        
+ <!-- 报价信息 -->
+        <div class="bg-white mt-1 p-4">
+            <h3 class="section-title">
+                <i class="fa fa-tag text-secondary mr-2"></i>
+                报价信息
+            </h3>
+            
+            <div class="bg-neutral-lighter rounded-lg p-3 mb-3">
+                <div class="flex justify-between mb-2">
+                    <span class="text-sm text-neutral-light">打样费</span>
+                    <span class="text-sm font-medium">¥300</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-sm text-neutral-light">打样周期</span>
+                    <span class="text-sm">7天</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-neutral-light">最小起订量</span>
+                    <span class="text-sm">200件</span>
+                </div>
+            </div>
+            
+            <p class="text-sm mb-2">大货阶梯报价：</p>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="bg-neutral-lighter rounded-lg p-3 text-center">
+                    <p class="text-xs text-neutral-light">200件</p>
+                    <p class="text-base font-bold text-secondary">¥68<span class="text-xs font-normal text-neutral-light">/件</span></p>
+                </div>
+                <div class="bg-neutral-lighter rounded-lg p-3 text-center">
+                    <p class="text-xs text-neutral-light">500件</p>
+                    <p class="text-base font-bold">¥62<span class="text-xs font-normal text-neutral-light">/件</span></p>
+                </div>
+                <div class="bg-neutral-lighter rounded-lg p-3 text-center">
+                    <p class="text-xs text-neutral-light">1000件</p>
+                    <p class="text-base font-bold">¥58<span class="text-xs font-normal text-neutral-light">/件</span></p>
+                </div>
+                <div class="bg-neutral-lighter rounded-lg p-3 text-center">
+                    <p class="text-xs text-neutral-light">2000+件</p>
+                    <p class="text-base font-bold">¥52<span class="text-xs font-normal text-neutral-light">/件</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工厂图片轮播 -->
+        <div class="bg-white mt-1 p-4">
+            <h3 class="section-title">
+                <i class="fa fa-certificate text-secondary mr-2"></i>
+                工厂图片
+            </h3>
+            <div class="relative rounded-lg overflow-hidden h-48">
+                <img src="https://picsum.photos/800/400?random=10" alt="工厂外观" class="w-full h-full object-cover">
+                <div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                    1/5
+                </div>
+            </div>
+            
+            <!-- 缩略图指示器 -->
+            <div class="flex space-x-2 mt-2">
+                <div class="w-16 h-10 rounded overflow-hidden border-2 border-secondary">
+                    <img src="https://picsum.photos/200/100?random=10" alt="缩略图1" class="w-full h-full object-cover">
+                </div>
+                <div class="w-16 h-10 rounded overflow-hidden border border-gray-200">
+                    <img src="https://picsum.photos/200/100?random=11" alt="缩略图2" class="w-full h-full object-cover">
+                </div>
+                <div class="w-16 h-10 rounded overflow-hidden border border-gray-200">
+                    <img src="https://picsum.photos/200/100?random=12" alt="缩略图3" class="w-full h-full object-cover">
+                </div>
+                <div class="w-16 h-10 rounded overflow-hidden border border-gray-200">
+                    <img src="https://picsum.photos/200/100?random=13" alt="缩略图4" class="w-full h-full object-cover">
+                </div>
+                <div class="w-16 h-10 rounded overflow-hidden border border-gray-200">
+                    <img src="https://picsum.photos/200/100?random=14" alt="缩略图5" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+        
+       <!-- 工厂介绍 -->
+       <div class="bg-white mt-1 p-4">
+        <h3 class="section-title">
+            <i class="fa fa-info-circle text-secondary mr-2"></i>
+            工厂介绍
+        </h3>
+        
+        <div class="text-sm space-y-2">
+            <p>合光同程工厂成立于2010年，是一家专业生产毛绒玩具和布艺玩偶的制造商，拥有10年以上行业经验。</p>
+            
+            <p>工厂占地面积约5000平方米，现有员工200余人，拥有先进的生产设备和专业的设计团队，日产能可达5000件以上。</p>
+            
+            <p>我们严格遵循ISO9001质量管理体系，产品通过CE、EN71等国际认证，远销欧美、日韩及东南亚等多个国家和地区。</p>
+            
+            <p>多年来，我们与众多知名品牌保持长期合作关系，可提供从设计打样到生产发货的一站式服务，支持小批量定制和大规模生产。</p>
+        </div>
+    </div>
+        
+        <!-- 工厂能力 -->
+        <!-- <div class="bg-white mt-1 p-4">
+            <h3 class="section-title">
+                <i class="fa fa-cogs text-secondary mr-2"></i>
+                工厂能力
+            </h3>
+            
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-2">
+                        <i class="fa fa-scissors"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">生产类型</p>
+                        <p class="text-xs text-neutral-light">毛绒玩具、布艺玩偶</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-2">
+                        <i class="fa fa-tint"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">工艺</p>
+                        <p class="text-xs text-neutral-light">刺绣、印花、车缝</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-2">
+                        <i class="fa fa-truck"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">日产能</p>
+                        <p class="text-xs text-neutral-light">5000+件</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-2">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">出口地区</p>
+                        <p class="text-xs text-neutral-light">欧美、日韩、东南亚</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-2">
+                    <i class="fa fa-paint-brush"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium">材料</p>
+                    <p class="text-xs text-neutral-light">短毛绒、水晶超柔、PP棉、羽绒棉、涤纶</p>
+                </div>
+            </div>
+        </div> -->
+        
+        <!-- 工厂资质 -->
+        <div class="bg-white mt-1 p-4">
+            <h3 class="section-title">
+                <i class="fa fa-certificate text-secondary mr-2"></i>
+                工厂资质
+            </h3>
+            
+            <div class="grid grid-cols-3 gap-2 mb-2">
+                <div class="rounded-lg overflow-hidden aspect-square border border-gray-100">
+                    <img src="" alt="营业执照" class="w-full h-full object-cover">
+                    <div class="bg-black/60 text-white text-xs p-1 text-center truncate">营业执照</div>
+                </div>
+                <div class="rounded-lg overflow-hidden aspect-square border border-gray-100">
+                    <img src="" alt="ISO9001" class="w-full h-full object-cover">
+                    <div class="bg-black/60 text-white text-xs p-1 text-center truncate">ISO9001认证</div>
+                </div>
+                <div class="rounded-lg overflow-hidden aspect-square border border-gray-100">
+                    <img src="" alt="CE认证" class="w-full h-full object-cover">
+                    <div class="bg-black/60 text-white text-xs p-1 text-center truncate">CE认证</div>
+                </div>
+            </div>
+            
+            <div class="text-xs text-neutral-light text-center">
+                点击图片可查看大图
+            </div>
+        </div>
+        
+        
+        
+        <!-- 合作案例 -->
+        <div class="bg-white mt-1 p-4">
+            <h3 class="section-title">
+                <i class="fa fa-briefcase text-secondary mr-2"></i>
+                合作案例
+            </h3>
+            
+            <div class="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
+                <div class="flex-shrink-0 w-28 h-28 rounded-lg overflow-hidden">
+                    <img src="https://picsum.photos/300/300?random=30" alt="合作案例1" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-28 h-28 rounded-lg overflow-hidden">
+                    <img src="https://picsum.photos/300/300?random=31" alt="合作案例2" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-28 h-28 rounded-lg overflow-hidden">
+                    <img src="https://picsum.photos/300/300?random=32" alt="合作案例3" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-28 h-28 rounded-lg overflow-hidden">
+                    <img src="https://picsum.photos/300/300?random=33" alt="合作案例4" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-28 h-28 rounded-lg overflow-hidden">
+                    <img src="https://picsum.photos/300/300?random=34" alt="合作案例5" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <button class="flex-1 py-2.5 bg-secondary text-white rounded-lg w-full">
+                <i class="fa fa-check mr-1"></i> 选择此工厂
+            </button>
+        </div>
+        
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 返回按钮功能
+            document.getElementById('backBtn').addEventListener('click', () => {
+                // 实际应用中这里会返回上一页
+                window.history.back();
+            });
+            
+            // 图片轮播功能
+            const mainImage = document.querySelector('.relative.rounded-lg.overflow-hidden img');
+            const thumbnails = document.querySelectorAll('.w-16.h-10 img');
+            const imageCounter = document.querySelector('.absolute.bottom-2.right-2');
+            
+            thumbnails.forEach((thumb, index) => {
+                thumb.addEventListener('click', () => {
+                    // 更新主图
+                    mainImage.src = thumb.src.replace('/200/100', '/800/400');
+                    
+                    // 更新缩略图边框
+                    document.querySelectorAll('.w-16.h-10').forEach((el, i) => {
+                        if (i === index) {
+                            el.classList.remove('border-gray-200');
+                            el.classList.add('border-secondary');
+                        } else {
+                            el.classList.remove('border-secondary');
+                            el.classList.add('border-gray-200');
+                        }
+                    });
+                    
+                    // 更新计数器
+                    imageCounter.textContent = `${index + 1}/5`;
+                });
+            });
+            
+            // 资质图片点击查看大图功能
+            const certificateImages = document.querySelectorAll('.grid.grid-cols-3 img');
+            certificateImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    // 实际应用中这里会显示大图预览
+                    alert('查看资质大图');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

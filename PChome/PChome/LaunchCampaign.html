@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布众筹项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 与补充信息页保持一致的 Tailwind 配置
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF5A5F', // 主色调：珊瑚红
+                        secondary: '#0FA3B1', // 辅助色：科技蓝
+                        neutral: '#2A2A2A', // 中性色：深灰
+                        'neutral-light': '#8A8A8A', // 中性色：浅灰
+                        background: '#FAFAFA', // 背景色：浅灰
+                        success: '#3AA772', // 成功色：绿色
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .form-input-focus {
+                @apply focus:ring-2 focus:ring-secondary/50 focus:border-secondary focus:outline-none;
+            }
+            .form-error {
+                @apply border-red-500 focus:ring-red-200 focus:border-red-500;
+            }
+            .btn-primary {
+                @apply bg-secondary text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-secondary/90 active:bg-secondary/80 transition-all duration-200 transform hover:scale-105 active:scale-95;
+            }
+            .btn-disabled {
+                @apply bg-neutral-light/30 text-white/70 cursor-not-allowed shadow-none transform-none;
+            }
+            .card-hover {
+                @apply hover:border-secondary hover:bg-secondary/5 transition-all duration-200;
+            }
+            .packaging-option-selected {
+                @apply border-secondary bg-secondary/5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background font-sans text-neutral min-h-screen">
+
+    <!-- 顶部导航栏 - 与补充信息页一致 -->
+    <nav class="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <button class="text-neutral-light hover:text-neutral">
+                <i class="fa fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="text-lg font-bold">发布众筹</h1>
+            <button class="text-neutral-light hover:text-neutral">
+                <i class="fa fa-floppy-o text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容区 - 与补充信息页尺寸一致 -->
+    <main class="max-w-md mx-auto px-4 pt-24 pb-20">
+        <!-- 工厂报价汇总 -->
+        <section class="mb-6 bg-white p-4 rounded-lg shadow-sm">
+            <p class="font-semibold mb-6" style="text-align: center;color: red;">报价截止时间：2025-11-11</p>
+            <p class="font-semibold mb-4">官方认证工厂报价如下，请选择一家工厂作为您定价的参考（自愿打样，众筹成功即退）：</p>
+            <!-- <h2 class="font-semibold mb-4">工厂报价汇总（3家）</h2> -->
+            
+            <div class="space-y-4">
+                <!-- 工厂1 -->
+                <div class="border border-secondary rounded-lg p-4 relative card-hover factory-card-selected cursor-pointer" data-id="1">
+                    <div class="absolute top-4 right-4 flex items-center">
+                        <span class="text-xs bg-secondary/10 text-secondary px-1.5 py-0.25 rounded mr-2">推荐</span>
+                        <div class="w-4 h-4 rounded border border-neutral-light/50 flex items-center justify-center bg-white">
+                            <div class="w-2 h-2 rounded-full bg-secondary"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h3 class="font-medium">合光同程工厂</h3>
+                        <p class="text-xs text-neutral-light mt-0.5">广东省深圳市宝安区西乡街道固戍一路170号</p>
+                    </div>
+                    
+                    <div class="mb-3 pt-2 border-t border-gray-100">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-xs text-neutral-light mb-2">打样费</span>
+                            <span class="font-medium">¥300</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-xs text-neutral-light mb-2">打样周期</span>
+                            <span>7天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-2 border-t border-gray-100">
+                        <p class="text-neutral-light">大货报价：</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">200件</p>
+                                <p class="text-sm font-medium">¥68</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">500件</p>
+                                <p class="text-sm font-medium">¥62</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">1000件</p>
+                                <p class="text-sm font-medium">¥58</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">2000+件</p>
+                                <p class="text-sm font-medium">¥52</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工厂2 -->
+                <div class="border border-neutral-light/30 rounded-lg p-4 relative card-hover cursor-pointer" data-id="2">
+                    <div class="absolute top-4 right-4">
+                        <div class="w-4 h-4 rounded border border-neutral-light/50 flex items-center justify-center bg-white">
+                            <!-- 未选中状态为空 -->
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h3 class="font-medium">安康毛绒工厂</h3>
+                        <p class="text-xs text-neutral-light mt-0.5">江苏省扬州市邗江区维扬经济开发区蜀岗西路1号</p>
+                    </div>
+                    
+                    <div class="mb-3 pt-2 border-t border-gray-100">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-xs text-neutral-light mb-2">打样费</span>
+                            <span class="font-medium">¥350</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-xs text-neutral-light mb-2">打样周期</span>
+                            <span>5天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-2 border-t border-gray-100">
+                        <p class="text-neutral-light">大货报价：</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">200件</p>
+                                <p class="text-sm font-medium">¥72</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">500件</p>
+                                <p class="text-sm font-medium">¥66</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">1000件</p>
+                                <p class="text-sm font-medium">¥62</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">2000+件</p>
+                                <p class="text-sm font-medium">¥56</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工厂3 -->
+                <div class="border border-neutral-light/30 rounded-lg p-4 relative card-hover cursor-pointer" data-id="3">
+                    <div class="absolute top-4 right-4">
+                        <div class="w-4 h-4 rounded border border-neutral-light/50 flex items-center justify-center bg-white">
+                            <!-- 未选中状态为空 -->
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h3 class="font-medium">东莞XX工厂</h3>
+                        <p class="text-xs text-neutral-light mt-0.5">广东省东莞市长安镇新安社区横增路1号</p>
+                    </div>
+                    
+                    <div class="mb-3 pt-2 border-t border-gray-100">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-xs text-neutral-light mb-2">打样费</span>
+                            <span class="font-medium">¥280</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-xs text-neutral-light mb-2">打样周期</span>
+                            <span>6天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-2 border-t border-gray-100">
+                        <p class="text-neutral-light">大货报价：</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">200件</p>
+                                <p class="text-sm font-medium">¥75</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">500件</p>
+                                <p class="text-sm font-medium">¥69</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">1000件</p>
+                                <p class="text-sm font-medium">¥65</p>
+                            </div>
+                            <div class="bg-gray-50 rounded p-2 text-center">
+                                <p class="text-xs text-neutral-light">2000+件</p>
+                                <p class="text-sm font-medium">¥59</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- 众筹设置区域 -->
+        <section class="space-y-6 my-4">
+            <!-- 选择工厂 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <label class="block text-sm font-medium text-neutral-light mb-1.5">选择工厂 <span class="text-primary">*</span></label>
+                <div class="relative">
+                    <select id="factorySelect" class="w-full border border-neutral-light/30 rounded-md px-3 py-2 bg-white form-input-focus">
+                        <option value="1">合光同程工厂</option>
+                        <option value="2">安康毛绒工厂</option>
+                        <option value="3">东莞XX工厂</option>
+                    </select>
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-neutral-light">
+                        <!-- <i class="fa fa-chevron-down"></i> -->
+                    </div>
+                </div>
+
+                <!-- 零售价设置 -->
+                <div style="margin-top: 5px;">
+                    <label class="block text-sm font-medium text-neutral-light mb-1">众筹价 *</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2 text-sm text-neutral-light">¥</span>
+                        <input id="retailPrice" type="number" min="68" value="99" class="w-full border border-neutral-light/30 rounded-md pl-8 pr-20 py-2 form-input-focus">
+                        <span id="minPriceHint" class="absolute right-3 top-2 text-xs text-primary font-semibold">≥¥68</span>
+                    </div>
+                </div>
+
+                <!-- 众筹数量设置 -->
+                <div style="margin-top: 5px;">
+                    <label class="block text-sm font-medium text-neutral-light mb-1">众筹数量 *</label>
+                    <div class="relative">
+                        <input id="crowdfundingQuantity" type="number" min="200" value="200" class="w-full border border-neutral-light/30 rounded-md px-3 py-2 form-input-focus">
+                        <span class="absolute right-3 top-2 text-xs text-neutral-light">≥200件</span>
+                    </div>
+                </div>
+                
+
+                <!-- 众筹总金额设置 -->
+                <div style="margin-top: 5px;">
+                    <label class="block text-sm font-medium text-neutral-light mb-1">众筹总金额 *</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2 text-sm text-neutral-light">¥</span>
+                        <input id="crowdfundPrice" type="number" min="19800" value="20000" class="w-full border border-neutral-light/30 rounded-md pl-8 pr-20 py-2 form-input-focus">
+                        <span id="minPriceHint" class="absolute right-3 top-2 text-xs text-primary font-semibold">≥¥19800</span>
+                    </div>
+                </div>
+
+                <!-- 众筹天数设置 -->
+                <div style="margin-top: 5px;">
+                    <label class="block text-sm font-medium text-neutral-light mb-1">众筹天数 *</label>
+                    <select id="campaignDays" class="w-full border border-neutral-light/30 rounded-md px-3 py-2 bg-white form-input-focus">
+                      <option value="30" selected>30天</option>
+                      <option value="45">45天</option>
+                      <option value="60">60天</option>
+                      <option value="75">75天</option>
+                      <option value="90">90天</option>
+                    </select>
+                </div>
+            </div>
+        
+            <!-- 包装方式选择 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <label class="block text-sm font-medium text-neutral-light mb-1.5">包装方式 <span class="text-primary">*</span></label>
+                <p class="text-xs text-neutral-light mb-3">请根据您的玩偶尺寸选择合适的包装</p>
+                
+                <div class="space-y-2.5" id="packagingOptions">
+                    <!-- 包装选项 -->
+                    <div class="border border-neutral-light/30 rounded-lg p-3 cursor-pointer card-hover packaging-option" data-id="small" data-price="0.5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">白纸盒小</div>
+                                <div class="text-xs text-neutral-light mt-0.5">
+                                    适用≤15cm玩偶，内尺寸16×14×15cm
+                                </div>
+                            </div>
+                            <div class="text-secondary font-medium">¥0.5/个</div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-neutral-light/30 rounded-lg p-3 cursor-pointer card-hover packaging-option packaging-option-selected" data-id="medium" data-price="1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">白纸盒中</div>
+                                <div class="text-xs text-neutral-light mt-0.5">
+                                    适用25-30cm玩偶，内尺寸25×20×30cm
+                                </div>
+                            </div>
+                            <div class="text-secondary font-medium">¥1/个</div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-neutral-light/30 rounded-lg p-3 cursor-pointer card-hover packaging-option" data-id="large" data-price="2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">白纸盒大</div>
+                                <div class="text-xs text-neutral-light mt-0.5">
+                                    适用40-50cm玩偶，内尺寸45×40×50cm
+                                </div>
+                            </div>
+                            <div class="text-secondary font-medium">¥2/个</div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-neutral-light/30 rounded-lg p-3 cursor-pointer card-hover packaging-option" data-id="custom" data-price="0">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">包装定制</div>
+                                <div class="text-xs text-neutral-light mt-0.5">
+                                    参赛者自行设计并定制生产包装，完成后将包装直接寄送至官方地址即可。
+                                </div>
+                            </div>
+                            <div class="text-secondary font-medium">¥0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- 预计信息 -->
+             <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-neutral-light">包装成本：</span>
+                        <span id="packagingCost" class="text-sm font-medium">¥1/个</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-neutral-light">预计净收益：</span>
+                        <span id="estimatedProfit" class="text-sm font-medium text-success">¥21.1/件</span>
+                    </div>
+                    <div class="text-xs text-neutral-light mt-0.5">
+                        （已扣服务费&邮费&税费&包装成本）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 费用明细说明 -->
+            <div class="bg-neutral/10 rounded-lg p-3 text-xs text-neutral-light">
+                <p class="font-medium mb-1">净收益计算说明：</p>
+                <p>预计净收益 = 众筹总金额 - 工厂生产费（件数×工厂报价） - 包装成本 - 10%服务费 - 10%托管费 - 邮费10元 - 税费</p>
+                <p class="mt-1">当前工厂价：¥68.00</p>
+            </div>
+            
+            <!-- 协议确认和提交 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <label class="flex items-start mt-2">
+                    <input id="agreeTerms" type="checkbox" checked class="mt-1 mr-2 accent-secondary">
+                    <label for="agreeTerms" class="text-sm text-neutral-light">我已阅读并同意<a href="#" class="text-secondary">《发起者协议》</a></label>
+                </label>
+                
+                <button id="publishBtn" class="btn-primary w-full mt-4">
+                    确认并发布众筹
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 二次确认弹窗 -->
+    <div id="confirmModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-5 shadow-sm">
+            <h3 class="text-center text-base font-medium mb-3">确认发布</h3>
+            <p class="text-center text-sm text-neutral-light mb-5">发布后不可修改价格/数量，确定发布？</p>
+            <div class="flex space-x-3">
+                <button id="cancelPublish" class="flex-1 py-2 border border-neutral-light/30 rounded-lg text-neutral font-medium hover:bg-neutral/5 transition-colors">
+                    取消
+                </button>
+                <button id="confirmPublish" class="flex-1 py-2 bg-secondary text-white rounded-lg font-medium hover:bg-secondary/90 transition-colors">
+                    确定发布
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功提示弹窗 - 与补充信息页风格一致 -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-5 text-center shadow-sm">
+            <div class="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa fa-check text-2xl text-success"></i>
+            </div>
+            <h3 class="text-base font-medium mb-2">发布成功</h3>
+            <p class="text-sm text-neutral-light mb-4">您的众筹项目已成功发布</p>
+            <p class="text-sm text-neutral-light mb-5">项目ID：<span class="font-medium text-neutral">ZC20250926001</span></p>
+            <button id="gotoMyProjects" class="btn-primary w-full">
+                前往我的众筹
+            </button>
+        </div>
+    </div>
+
+    <!-- 定制包装提示弹窗 -->
+    <div id="customPackagingModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-5 shadow-sm">
+            <h3 class="text-center text-base font-medium mb-3">彩盒定制说明</h3>
+            <p class="text-sm text-neutral-light mb-4">
+                彩盒定制需要根据您的具体需求进行报价，
+                请联系客服提供详细信息获取准确报价。
+            </p>
+            <p class="text-sm text-neutral-light mb-5">
+                客服电话：400-123-4567
+            </p>
+            <button id="closeCustomPackaging" class="btn-primary w-full">
+                我知道了
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取DOM元素
+            const retailPriceInput = document.getElementById('retailPrice');
+            const crowdfundingQuantityInput = document.getElementById('crowdfundingQuantity');
+            const factorySelect = document.getElementById('factorySelect');
+            const estimatedProfitElement = document.getElementById('estimatedProfit');
+            const packagingCostElement = document.getElementById('packagingCost');
+            const publishBtn = document.getElementById('publishBtn');
+            const confirmModal = document.getElementById('confirmModal');
+            const cancelPublishBtn = document.getElementById('cancelPublish');
+            const confirmPublishBtn = document.getElementById('confirmPublish');
+            const successModal = document.getElementById('successModal');
+            const gotoMyProjectsBtn = document.getElementById('gotoMyProjects');
+            const agreeTerms = document.getElementById('agreeTerms');
+            const packagingOptions = document.querySelectorAll('.packaging-option');
+            const customPackagingModal = document.getElementById('customPackagingModal');
+            const closeCustomPackaging = document.getElementById('closeCustomPackaging');
+            
+            // 状态变量
+            let selectedPackagingPrice = 1; // 默认选中中号白纸盒
+            let isCustomPackaging = false;
+            
+            // 工厂价格数据
+            const factoryPrices = {
+                '1': 68,   // 合光同程工厂
+                '2': 72,   // 安康毛绒工厂
+                '3': 75    // 东莞XX工厂
+            };
+            
+            // 计算预计净收益
+            function calculateProfit() {
+                const retailPrice = parseFloat(retailPriceInput.value) || 0;
+                const factoryId = factorySelect.value;
+                const factoryPrice = factoryPrices[factoryId] || 0;
+                
+                if (retailPrice >= factoryPrice) {
+                    // 计算各项费用
+                    const serviceFee = retailPrice * 0.1;  // 10%服务费
+                    const custodyFee = retailPrice * 0.1;  // 10%托管费
+                    const shippingFee = 10;                // 邮费10元
+                    const tax = 0;                         // 税费（示例中暂设为0）
+                    
+                    // 计算净收益（扣除包装成本）
+                    const netProfit = retailPrice - factoryPrice - selectedPackagingPrice - 
+                                     serviceFee - custodyFee - shippingFee - tax;
+                    
+                    // 更新显示，保留一位小数
+                    estimatedProfitElement.textContent = `¥${netProfit.toFixed(1)}/件`;
+                }
+            }
+            
+            // 验证表单是否可以提交
+            function validateForm() {
+                const retailPrice = parseFloat(retailPriceInput.value);
+                const quantity = parseInt(crowdfundingQuantityInput.value);
+                const factoryPrice = factoryPrices[factorySelect.value] || 0;
+                
+                const isPriceValid = !isNaN(retailPrice) && retailPrice >= factoryPrice;
+                const isQuantityValid = !isNaN(quantity) && quantity >= 200;
+                const isTermsAgreed = agreeTerms.checked;
+                const isPackagingValid = !isCustomPackaging; // 定制包装需要额外确认
+                
+                const isReady = isPriceValid && isQuantityValid && isTermsAgreed && isPackagingValid;
+                
+                if (isReady) {
+                    publishBtn.classList.remove('btn-disabled');
+                    publishBtn.disabled = false;
+                } else {
+                    publishBtn.classList.add('btn-disabled');
+                    publishBtn.disabled = true;
+                }
+            }
+            
+            // 包装选项点击事件
+            packagingOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const packagingId = option.getAttribute('data-id');
+                    const price = parseFloat(option.getAttribute('data-price')) || 0;
+                    
+                    // 处理定制包装
+                    if (packagingId === 'custom') {
+                        isCustomPackaging = true;
+                        customPackagingModal.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    // 普通包装选择
+                    isCustomPackaging = false;
+                    
+                    // 更新选中状态
+                    packagingOptions.forEach(opt => {
+                        opt.classList.remove('packaging-option-selected');
+                    });
+                    option.classList.add('packaging-option-selected');
+                    
+                    // 更新包装价格
+                    selectedPackagingPrice = price;
+                    packagingCostElement.textContent = `¥${price}/个`;
+                    
+                    // 重新计算收益和验证
+                    calculateProfit();
+                    validateForm();
+                });
+            });
+            
+            // 关闭定制包装提示
+            closeCustomPackaging.addEventListener('click', () => {
+                customPackagingModal.classList.add('hidden');
+                validateForm();
+            });
+            
+            // 监听输入变化，实时计算收益和验证表单
+            retailPriceInput.addEventListener('input', () => {
+                calculateProfit();
+                validateForm();
+            });
+            
+            crowdfundingQuantityInput.addEventListener('input', validateForm);
+            agreeTerms.addEventListener('change', validateForm);
+            
+            factorySelect.addEventListener('change', function() {
+                // 切换工厂时更新最低零售价限制
+                const factoryPrice = factoryPrices[this.value] || 0;
+                retailPriceInput.min = factoryPrice;
+                
+                // 如果当前零售价低于新工厂的价格，自动调整
+                if (parseFloat(retailPriceInput.value) < factoryPrice) {
+                    retailPriceInput.value = factoryPrice;
+                }
+                
+                // 重新计算收益和验证
+                calculateProfit();
+                validateForm();
+            });
+            
+            // 发布按钮点击事件
+            publishBtn.addEventListener('click', function() {
+                // 显示二次确认弹窗
+                confirmModal.classList.remove('hidden');
+            });
+            
+            // 取消发布
+            cancelPublishBtn.addEventListener('click', function() {
+                confirmModal.classList.add('hidden');
+            });
+            
+            // 确认发布
+            confirmPublishBtn.addEventListener('click', function() {
+                confirmModal.classList.add('hidden');
+                // 显示成功提示
+                successModal.classList.remove('hidden');
+            });
+            
+            // 前往我的众筹
+            gotoMyProjectsBtn.addEventListener('click', function() {
+                successModal.classList.add('hidden');
+                // 实际应用中这里会跳转到"我的众筹"页面
+                alert('跳转到我的众筹页面');
+            });
+            
+            // 初始化计算和验证
+            calculateProfit();
+            validateForm();
+        });
+    </script>
+</body>
+</html>
